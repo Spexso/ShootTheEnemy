@@ -19,7 +19,7 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 3000})         
 const serverPlayers = {}
 
 // Amount of pixels to shift on movement
-const moveSpeed = 30
+const moveSpeed = 20
 
 // Port Number for local run
 const port = 3000
@@ -76,14 +76,17 @@ io.on('connection', (socket) => {
         break
 
       case 'keyA':
+        console.log('Key A initiated');
         serverPlayers[socket.id].x -= moveSpeed
         break
 
       case 'keyS':
+        console.log('Key S initiated');
         serverPlayers[socket.id].y += moveSpeed
         break
 
       case 'keyD':
+        console.log('Key D initiated');
         serverPlayers[socket.id].x += moveSpeed
         break
 

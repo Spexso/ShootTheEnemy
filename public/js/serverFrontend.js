@@ -207,9 +207,51 @@ function animate() {
 
 }
 
-animate()
-// spawnEnemies()
+const LocalSpeed = 20;
 
+animate()
+
+const keys = {
+  w: {
+    pressed: false
+  },
+  a: {
+    pressed: false
+  },
+  s: {
+    pressed: false
+  },
+  d: {
+    pressed: false
+  }
+}
+
+setInterval(() => {
+  
+  if(keys.w.pressed) {
+    FrontendPlayers[socket.id].y -= LocalSpeed
+    socket.emit('keydown', 'keyW')
+  }
+
+  if (keys.a.pressed) {
+   
+    FrontendPlayers[socket.id].x -= LocalSpeed
+    socket.emit('keydown', 'keyA')
+  }
+
+  if (keys.s.pressed) {
+   
+    FrontendPlayers[socket.id].y += LocalSpeed
+    socket.emit('keydown', 'keyS')
+  }
+
+  if (keys.d.pressed) {
+    
+    FrontendPlayers[socket.id].x += LocalSpeed
+    socket.emit('keydown', 'keyD')
+  }
+
+}, 15);
 
 window.addEventListener('keydown', (event) => {
 
@@ -223,32 +265,45 @@ window.addEventListener('keydown', (event) => {
 
     case 'KeyW':
       console.log('W key pressed')
-      // FrontendPlayers[socket.id].y -= 10
-      socket.emit('keydown', 'keyW')
+      keys.w.pressed = true
       break
 
     case 'KeyA':
       console.log('A key pressed')
-      // FrontendPlayers[socket.id].x -= 10
-      socket.emit('keydown', 'keyA')
+      keys.a.pressed = true
       break
     
     case 'KeyD':
       console.log('D key pressed')  
-      // FrontendPlayers[socket.id].x += 10
-      socket.emit('keydown', 'keyD')
+      keys.d.pressed = true
       break
       
     case 'KeyS':
       console.log('S key pressed')
-      // FrontendPlayers[socket.id].y += 10
-      socket.emit('keydown', 'keyS')
+      keys.s.pressed = true
       break
   }
+})
 
-  // const pressedKey = handleKeyEvent(event)
+window.addEventListener('keyup', (event) => {
+  if (!FrontendPlayers[socket.id]) 
+    return
 
-  // DEBUG
-  console.log(event);
-  //console.log(pressedKey);
+  switch (event.code) {
+    case 'KeyW':
+      keys.w.pressed = false
+      break
+
+    case 'KeyA':
+      keys.a.pressed = false
+      break
+
+    case 'KeyS':
+      keys.s.pressed = false
+      break
+
+    case 'KeyD':
+      keys.d.pressed = false
+      break
+  }
 })
