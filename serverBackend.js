@@ -21,6 +21,7 @@ const serverPlayers = {}
 // Amount of pixels to shift on movement
 const moveSpeed = 30
 
+// Port Number for local run
 const port = 3000
 
 app.use(express.static('public'))
@@ -30,6 +31,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
+
+// Player connection Handle
+// Function will stay alive until player disconnect
+// Event driven functions will be called inside this function 
 io.on('connection', (socket) => {
   
   console.log('A new player has connected');
@@ -57,6 +62,8 @@ io.on('connection', (socket) => {
     io.emit('refreshPlayers', serverPlayers)
   })
 
+
+  // Player inputs will be caught here
   socket.on('keydown', (keycode) => {
     console.log('Received keycode:', keycode);
     //serverPlayers[socket.id].y -= 30
@@ -107,4 +114,5 @@ server.listen(port, () => {
   console.log(`Program listening on port ${port}`);
 })
 
+// Debug log
 console.log(`Server did load`);
