@@ -45,7 +45,8 @@ io.on('connection', (socket) => {
     x: 600 * Math.random(),
     y: 600 * Math.random(),
     radius: 10,
-    color: `hsl(${360 * Math.random()}, 100%, 70%)`         // Generate random color for player 
+    color: `hsl(${360 * Math.random()}, 100%, 70%)`,         // Generate random color for player 
+    sequenceNumber: 0
   }    
   
   // Broadcast new players to everyone
@@ -64,9 +65,11 @@ io.on('connection', (socket) => {
 
 
   // Player inputs will be caught here
-  socket.on('keydown', (keycode) => {
-    console.log('Received keycode:', keycode);
-    //serverPlayers[socket.id].y -= 30
+  socket.on('keydown', ({keycode, sequenceNumber }) => {
+    
+
+    // Track sequence number of keys for individual player
+    serverPlayers[socket.id].sequenceNumber = sequenceNumber
 
     // Based on input select movement action
     switch (keycode) {

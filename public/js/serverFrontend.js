@@ -39,12 +39,32 @@ socket.on('refreshPlayers', (appPlayers) => {
         color: backendPlayer.color
       })
     } else {
-      
-      // Change coordinates of player on frontend based on changed position of backend player
-      FrontendPlayers[id].x = backendPlayer.x
-      FrontendPlayers[id].y = backendPlayer.y
 
-      console.log("Location changed")
+      if (id === socket.id) {
+
+        // if a player already exists
+        FrontendPlayers[id].x = backendPlayer.x
+        FrontendPlayers[id].y = backendPlayer.y
+
+        const lastBackendInputIndex = playerInputs.findIndex((input) => {
+          return backendPlayer.sequenceNumber === input.sequenceNumber
+        })
+
+        if (lastBackendInputIndex > -1)
+          playerInputs.splice(0, lastBackendInputIndex + 1)
+
+        playerInputs.forEach((input) => {
+          FrontendPlayers[id].x += input.dx
+          FrontendPlayers[id].y += input.dy
+        })
+      }
+      else {
+
+        // For other players
+        FrontendPlayers[id].x = backendPlayer.x
+        FrontendPlayers[id].y = backendPlayer.y
+
+      }
     }
   }
 
@@ -236,7 +256,7 @@ setInterval(() => {
     playerInputs.push({ sequenceNumber, dx: 0, dy: -LocalSpeed })
 
     FrontendPlayers[socket.id].y -= LocalSpeed
-    socket.emit('keydown', 'keyW')
+    socket.emit('keydown', { keycode: 'keyW', sequenceNumber })
   }
 
   if (keys.a.pressed) {
@@ -245,7 +265,7 @@ setInterval(() => {
     playerInputs.push({ sequenceNumber, dx: -LocalSpeed, dy: 0})
 
     FrontendPlayers[socket.id].x -= LocalSpeed
-    socket.emit('keydown', 'keyA')
+    socket.emit('keydown', { keycode: 'keyA', sequenceNumber })
   }
 
   if (keys.s.pressed) {
@@ -254,7 +274,7 @@ setInterval(() => {
     playerInputs.push({ sequenceNumber, dx: 0, dy: LocalSpeed })
 
     FrontendPlayers[socket.id].y += LocalSpeed
-    socket.emit('keydown', 'keyS')
+    socket.emit('keydown', { keycode: 'keyS', sequenceNumber })
   }
 
   if (keys.d.pressed) {
@@ -263,7 +283,7 @@ setInterval(() => {
     playerInputs.push({ sequenceNumber, dx: LocalSpeed, dy: 0})
 
     FrontendPlayers[socket.id].x += LocalSpeed
-    socket.emit('keydown', 'keyD')
+    socket.emit('keydown', { keycode: 'keyD', sequenceNumber })
   }
 
 }, 15);
