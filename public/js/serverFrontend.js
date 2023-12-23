@@ -207,7 +207,9 @@ function animate() {
 
 }
 
-const LocalSpeed = 20;
+const LocalSpeed = 10;
+const playerInputs = []
+let sequenceNumber = 0
 
 animate()
 
@@ -229,24 +231,37 @@ const keys = {
 setInterval(() => {
   
   if(keys.w.pressed) {
+
+    sequenceNumber++
+    playerInputs.push({ sequenceNumber, dx: 0, dy: -LocalSpeed })
+
     FrontendPlayers[socket.id].y -= LocalSpeed
     socket.emit('keydown', 'keyW')
   }
 
   if (keys.a.pressed) {
-   
+    
+    sequenceNumber++
+    playerInputs.push({ sequenceNumber, dx: -LocalSpeed, dy: 0})
+
     FrontendPlayers[socket.id].x -= LocalSpeed
     socket.emit('keydown', 'keyA')
   }
 
   if (keys.s.pressed) {
    
+    sequenceNumber++
+    playerInputs.push({ sequenceNumber, dx: 0, dy: LocalSpeed })
+
     FrontendPlayers[socket.id].y += LocalSpeed
     socket.emit('keydown', 'keyS')
   }
 
   if (keys.d.pressed) {
     
+    sequenceNumber++
+    playerInputs.push({ sequenceNumber, dx: LocalSpeed, dy: 0})
+
     FrontendPlayers[socket.id].x += LocalSpeed
     socket.emit('keydown', 'keyD')
   }

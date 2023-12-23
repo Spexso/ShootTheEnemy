@@ -19,7 +19,7 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 3000})         
 const serverPlayers = {}
 
 // Amount of pixels to shift on movement
-const moveSpeed = 20
+const moveSpeed = 10
 
 // Port Number for local run
 const port = 3000
@@ -109,13 +109,8 @@ setInterval( () => {
 }, 15)
 
 
-
-
 // Listening on http server
 server.listen(port, () => {
 
   console.log(`Program listening on port ${port}`);
 })
-
-// Debug log
-console.log(`Server did load`);
