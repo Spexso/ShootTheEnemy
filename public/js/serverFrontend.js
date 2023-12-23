@@ -82,10 +82,7 @@ socket.on('refreshPlayers', (appPlayers) => {
       delete FrontendPlayers[id];
     }
   }
-
-
-   //console.log(FrontendPlayers);
-  // DEBUG
+  
 })
 
 /*
