@@ -88,6 +88,15 @@ socket.on('refreshPlayers', (appPlayers) => {
 
 })
 
+socket.on('connect', () => {
+
+  socket.emit('initCanvas', {
+    width: canvas.width, 
+    height: canvas.height, 
+    devicePixelRatio
+  })
+})
+
 
 socket.on('refreshProjectiles', (serverProjectiles) => {
 
@@ -114,6 +123,17 @@ socket.on('refreshProjectiles', (serverProjectiles) => {
 
     }
   }
+
+  // Iterate through every projectile
+  for (const frontEndProjectileId in frontEndProjectiles){
+    
+    // If a Projectile hits the edge of canvas delete it 
+    if(!serverProjectiles[frontEndProjectileId]){
+
+      delete frontEndProjectiles[frontEndProjectileId];
+    }
+  }
+
 })
 
 

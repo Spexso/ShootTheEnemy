@@ -37,6 +37,7 @@ const moveSpeed = 10
 // Projectiles array 
 const serverProjectiles = {}
 let projectileId = 0
+const PROJECTILE_RADIUS = 5
 
 // Player connection Handle
 // Function will stay alive until player disconnect
@@ -58,14 +59,23 @@ io.on('connection', (socket) => {
   // Broadcast new players to everyone
   io.emit('refreshPlayers', serverPlayers)
 
+  // Listen for connect then initialize canvas
+  socket.on('initCanvas', ({width, height}) => {
+
+    serverPlayers[socket.id].canvas = {
+      width,
+      height
+    }
+  })
+
   // Listen for shoot action 
   socket.on('shoot', ({x, y, angle}) => {
     projectileId++;
 
     // Calculate velocity
     const velocity = {
-      x: Math.cos(angle) * 5,
-      y: Math.sin(angle) * 5
+      x: Math.cos(angle) * 20,
+      y: Math.sin(angle) * 20
     }
 
     serverProjectiles[projectileId] = {
@@ -139,6 +149,22 @@ setInterval( () => {
 
     serverProjectiles[id].x += serverProjectiles[id].velocity.x
     serverProjectiles[id].y += serverProjectiles[id].velocity.y
+
+
+    
+    // Delete projectile if it reaches end of canvas
+    if(
+         serverProjectiles[id].x - PROJECTILE_RADIUS >= serverPlayers[serverProjectiles[id].playerId]?.canvas?.width 
+      || serverProjectiles[id].x + PROJECTILE_RADIUS <= 0 
+      || serverProjectiles[id].y - PROJECTILE_RADIUS >= serverPlayers[serverProjectiles[id].playerId]?.canvas?.height
+      || serverProjectiles[id].y + PROJECTILE_RADIUS <= 0 
+      ) 
+      {
+      
+        delete serverProjectiles[id]
+      }
+
+    console.log(serverProjectiles)
   }
 
   io.emit('refreshProjectiles', serverProjectiles)
