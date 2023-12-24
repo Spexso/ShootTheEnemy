@@ -34,10 +34,14 @@ const serverPlayers = {}
 // Amount of pixels to shift on movement
 const moveSpeed = 10
 
+// Radius of player pawn
+const RADIUS = 10
+
 // Projectiles array 
 const serverProjectiles = {}
 let projectileId = 0
 const PROJECTILE_RADIUS = 5
+
 
 // Player connection Handle
 // Function will stay alive until player disconnect
@@ -60,12 +64,21 @@ io.on('connection', (socket) => {
   io.emit('refreshPlayers', serverPlayers)
 
   // Listen for connect then initialize canvas
-  socket.on('initCanvas', ({width, height}) => {
+  socket.on('initCanvas', ({width, height, devicePixelRatio}) => {
 
     serverPlayers[socket.id].canvas = {
       width,
-      height
+      height,
     }
+
+    
+    // Set player radius
+    if( devicePixelRatio > 1) {
+      serverPlayers[socket.id].radius = 2 * RADIUS
+    } else {
+      serverPlayers[socket.id].radius = RADIUS
+    }
+    
   })
 
   // Listen for shoot action 
@@ -162,9 +175,27 @@ setInterval( () => {
       {
       
         delete serverProjectiles[id]
+        continue;
       }
 
-    console.log(serverProjectiles)
+    for(const playerId in serverPlayers){
+
+      const serverPlayer = serverPlayers[playerId]
+
+      const distance_projectile_player = Math.hypot(
+                                  serverProjectiles[id].x - serverPlayer.x, 
+                                  serverProjectiles[id].y - serverPlayer.y)
+      
+      // Remove projectile and player if they collide
+      if( 
+        distance_projectile_player < PROJECTILE_RADIUS + serverPlayer.radius && 
+        serverProjectiles[id].playerId !== playerId) {
+
+          delete serverProjectiles[id]
+          delete serverPlayers[playerId]
+        break;
+      }
+    }
   }
 
   io.emit('refreshProjectiles', serverProjectiles)
