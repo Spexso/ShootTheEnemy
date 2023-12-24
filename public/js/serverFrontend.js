@@ -42,9 +42,41 @@ socket.on('refreshPlayers', (appPlayers) => {
         color: backendPlayer.color
       })
 
-      // Dynamically fill Leaderboard
-      document.querySelector('#playerLabels').innerHTML += `<div data-id="${id}",style="margin-bottom: 3px;">${id}: 0</div>`
+      // Dynamically fill Leaderboard 
+      document.querySelector('#playerLabels').innerHTML += `<div data-id="${id}" data-points="${backendPlayer.points}",style="margin-bottom: 3px;">
+      ${id}: ${backendPlayer.points}</div>`
     } else {
+
+      // Update score of player
+      document.querySelector(`div[data-id="${id}"]`).innerHTML = `${id} : ${backendPlayer.points}`
+
+      /* Sort players based on their points */
+      document.querySelector(`div[data-id="${id}"]`).setAttribute('data-points', backendPlayer.points)
+
+      const parentDiv = document.querySelector('#playerLabels')
+      const childDivs = Array.from(parentDiv.querySelectorAll('div'))
+
+      childDivs.sort( (a, b) => {
+        const FirstS = Number(a.getAttribute('data-points'))
+        const SecondS = Number(b.getAttribute('data-points'))
+
+        return SecondS - FirstS
+      })
+
+      // Remove old Element
+      childDivs.forEach(div => {
+
+        parentDiv.removeChild(div)
+      })
+
+      // Add sorted Element
+      childDivs.forEach(div => {
+
+        parentDiv.appendChild(div)
+      })
+
+      /********************************** */
+
 
       if (id === socket.id) {
 

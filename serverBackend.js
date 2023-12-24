@@ -57,7 +57,8 @@ io.on('connection', (socket) => {
     y: 600 * Math.random(),
     radius: 10,
     color: `hsl(${360 * Math.random()}, 100%, 70%)`,         // Generate random color for player 
-    sequenceNumber: 0
+    sequenceNumber: 0,
+    points: 0
   }    
   
   // Broadcast new players to everyone
@@ -190,6 +191,13 @@ setInterval( () => {
       if( 
         distance_projectile_player < PROJECTILE_RADIUS + serverPlayer.radius && 
         serverProjectiles[id].playerId !== playerId) {
+
+          if(serverPlayers[serverProjectiles[id].playerId]){
+
+            serverPlayers[serverProjectiles[id].playerId].points++
+            console.log(serverPlayers[serverProjectiles[id].playerId])
+          }
+          
 
           delete serverProjectiles[id]
           delete serverPlayers[playerId]
