@@ -15,12 +15,6 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 3000})           // Checks clients in every 2 seconds & if no response in 3 seconds timeouts clients
 
-// Players array to store each player's informations
-const serverPlayers = {}
-
-// Amount of pixels to shift on movement
-const moveSpeed = 10
-
 // Port Number for local run
 const port = 3000
 
@@ -31,6 +25,18 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
+/* Above Server Set up */
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Players array to store each player's informations
+const serverPlayers = {}
+
+// Amount of pixels to shift on movement
+const moveSpeed = 10
+
+// Projectiles array 
+const serverProjectiles = {}
+let projectileId = 0
 
 // Player connection Handle
 // Function will stay alive until player disconnect
@@ -51,6 +57,26 @@ io.on('connection', (socket) => {
   
   // Broadcast new players to everyone
   io.emit('refreshPlayers', serverPlayers)
+
+  // Listen for shoot action 
+  socket.on('shoot', ({x, y, angle}) => {
+    projectileId++;
+
+    // Calculate velocity
+    const velocity = {
+      x: Math.cos(angle) * 5,
+      y: Math.sin(angle) * 5
+    }
+
+    serverProjectiles[projectileId] = {
+      x,
+      y,
+      velocity,
+      playerId: socket.id
+    }
+
+    console.log(serverProjectiles)
+  })
   
   // If player disconnects delete that player and send a response
   socket.on('disconnect', (reason) => {

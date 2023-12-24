@@ -11,11 +11,19 @@ addEventListener('click', (event) => {
   )
 
   // Get velocity
+  /*
   const velocity = {
     x: Math.cos(angle) * 5,
     y: Math.sin(angle) * 5
   }
+  */
 
+  socket.emit('shoot', {
+    x: playerPosition.x,
+    y: playerPosition.y,
+    angle
+  })
+  /*
   frontEndProjectiles.push(
     new Projectile({
       x: playerPosition.x, 
@@ -25,6 +33,7 @@ addEventListener('click', (event) => {
       velocity
     })
   )
+  */
 
   console.log(frontEndProjectiles)
 })
