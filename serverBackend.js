@@ -141,6 +141,7 @@ setInterval( () => {
     serverProjectiles[id].y += serverProjectiles[id].velocity.y
   }
 
+  io.emit('refreshProjectiles', serverProjectiles)
   io.emit('refreshPlayers', serverPlayers)
 }, 15)
 

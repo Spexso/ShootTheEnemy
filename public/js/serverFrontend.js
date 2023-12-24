@@ -19,7 +19,7 @@ const y = canvas.height / 2
 const FrontendPlayers = {}
 
 // Shot projectile array objects
-const frontEndProjectiles = []
+const frontEndProjectiles = {}
 
 // Refresh players on frontend
 socket.on('refreshPlayers', (appPlayers) => {
@@ -88,6 +88,35 @@ socket.on('refreshPlayers', (appPlayers) => {
 
 })
 
+
+socket.on('refreshProjectiles', (serverProjectiles) => {
+
+  for (const id in serverProjectiles) {
+
+    const serverProjectile = serverProjectiles[id]
+    
+    // If projectile not existing, create projectile 
+    if(!frontEndProjectiles[id]) {
+
+      // Create new projectile
+      frontEndProjectiles[id] = new Projectile({
+        x: serverProjectile.x, 
+        y: serverProjectile.y,
+        radius: 5,
+        color: FrontendPlayers[serverProjectile.playerId]?.color,       // Only call color if player is available 
+        velocity: serverProjectile.velocity
+      })
+    } else {
+
+      frontEndProjectiles[id].x += serverProjectiles[id].velocity.x
+      frontEndProjectiles[id].y += serverProjectiles[id].velocity.y
+
+
+    }
+  }
+})
+
+
 /*
 * No need currently 
 
@@ -143,7 +172,12 @@ function animate() {
     PlayerToDraw.draw();
   }
 
- 
+  for (const id in frontEndProjectiles) {
+
+    const ProjectileToDraw = frontEndProjectiles[id];
+
+    ProjectileToDraw.draw();
+  }
   /*
   for (let i = frontEndProjectiles.length - 1; i >= 0; i--) {
 
