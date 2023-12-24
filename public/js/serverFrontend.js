@@ -144,7 +144,7 @@ function animate() {
   }
 
  
-
+  /*
   for (let i = frontEndProjectiles.length - 1; i >= 0; i--) {
 
     const frontEndProjectile = frontEndProjectiles[i]
@@ -152,7 +152,7 @@ function animate() {
     frontEndProjectile.update()
 
   }
-
+  */
 
 }
 

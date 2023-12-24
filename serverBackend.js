@@ -134,6 +134,13 @@ io.on('connection', (socket) => {
  */
 setInterval( () => {
 
+  // Update projectiles positions
+  for (const id in serverProjectiles) {
+
+    serverProjectiles[id].x += serverProjectiles[id].velocity.x
+    serverProjectiles[id].y += serverProjectiles[id].velocity.y
+  }
+
   io.emit('refreshPlayers', serverPlayers)
 }, 15)
 
