@@ -41,6 +41,9 @@ socket.on('refreshPlayers', (appPlayers) => {
         radius: backendPlayer.radius,
         color: backendPlayer.color
       })
+
+      // Dynamically fill Leaderboard
+      document.querySelector('#playerLabels').innerHTML += `<div data-id="${id}",style="margin-bottom: 3px;">${id}: 0</div>`
     } else {
 
       if (id === socket.id) {
@@ -80,9 +83,13 @@ socket.on('refreshPlayers', (appPlayers) => {
   for (const id in FrontendPlayers){
     
     // If Player from frontend does not exist on backend delete player from game
+    // Also Delete name of player from Leaderboard
     if(!appPlayers[id]){
 
       delete FrontendPlayers[id];
+      
+      const LabelToDelete = document.querySelector(`div[data-id="${id}"]`)
+      LabelToDelete.parentNode.removeChild(LabelToDelete)
     }
   }
 
