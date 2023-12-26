@@ -198,7 +198,7 @@ setInterval( () => {
             console.log(serverPlayers[serverProjectiles[id].playerId])
           }
           
-
+          
           delete serverProjectiles[id]
           delete serverPlayers[playerId]
         break;
