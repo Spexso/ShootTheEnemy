@@ -43,12 +43,14 @@ socket.on('refreshPlayers', (appPlayers) => {
       })
 
       // Dynamically fill Leaderboard 
-      document.querySelector('#playerLabels').innerHTML += `<div data-id="${id}" data-points="${backendPlayer.points}",style="margin-bottom: 3px;">
-      ${id}: ${backendPlayer.points}</div>`
-    } else {
+      document.querySelector('#playerLabels').innerHTML += 
+      `<div data-id="${id}" 
+      data-points="${backendPlayer.points}",style="margin-bottom: 3px;">
+      ${backendPlayer.username}: ${backendPlayer.points}</div>`
 
+    } else {
       // Update score of player
-      document.querySelector(`div[data-id="${id}"]`).innerHTML = `${id} : ${backendPlayer.points}`
+      document.querySelector(`div[data-id="${id}"]`).innerHTML = `${backendPlayer.username} : ${backendPlayer.points}`
 
       /* Sort players based on their points */
       document.querySelector(`div[data-id="${id}"]`).setAttribute('data-points', backendPlayer.points)
@@ -118,22 +120,17 @@ socket.on('refreshPlayers', (appPlayers) => {
     // Also Delete name of player from Leaderboard
     if(!appPlayers[id]){
 
-      delete FrontendPlayers[id];
-      
       const LabelToDelete = document.querySelector(`div[data-id="${id}"]`)
       LabelToDelete.parentNode.removeChild(LabelToDelete)
+
+      if( id == socket.id) {
+        document.querySelector('#usernameForm').style.display = 'block'
+      }
+
+      delete FrontendPlayers[id];
     }
   }
 
-})
-
-socket.on('connect', () => {
-
-  socket.emit('initCanvas', {
-    width: canvas.width, 
-    height: canvas.height, 
-    devicePixelRatio
-  })
 })
 
 
@@ -175,47 +172,6 @@ socket.on('refreshProjectiles', (serverProjectiles) => {
 
 })
 
-
-/*
-* No need currently 
-
-const projectiles = []
-const enemies = []
-const particles = []
-*/
-
-
-/*
-* Function not needed since enemies will be other players
-
-function spawnEnemies() {
-  setInterval(() => {
-    const radius = Math.random() * (30 - 4) + 4
-
-    let x
-    let y
-
-    if (Math.random() < 0.5) {
-      x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius
-      y = Math.random() * canvas.height
-    } else {
-      x = Math.random() * canvas.width
-      y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius
-    }
-
-    const color = `hsl(${Math.random() * 360}, 50%, 50%)`
-
-    const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x)
-
-    const velocity = {
-      x: Math.cos(angle),
-      y: Math.sin(angle)
-    }
-
-    enemies.push(new Enemy(x, y, radius, color, velocity))
-  }, 1000)
-}
-*/
 
 let animationId
 function animate() {
@@ -363,4 +319,19 @@ window.addEventListener('keyup', (event) => {
       keys.d.pressed = false
       break
   }
+})
+
+
+// Event Listener for username select form 
+document.querySelector('#usernameForm').addEventListener('submit', (event)=> {
+  event.preventDefault()
+
+  document.querySelector('#usernameForm').style.display='none'
+  socket.emit('initGame', {
+    width: canvas.width, 
+    height: canvas.height, 
+    devicePixelRatio,
+    username: document.querySelector('#usernameInput').value
+  })
+
 })

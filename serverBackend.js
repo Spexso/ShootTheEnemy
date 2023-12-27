@@ -50,38 +50,21 @@ io.on('connection', (socket) => {
   
   console.log('A new player has connected');
 
-  // Create a new player with id comes from socket
-  // 2D Locations of players are randomized
-  serverPlayers[socket.id] = {
-    x: 600 * Math.random(),
-    y: 600 * Math.random(),
-    radius: 10,
-    color: `hsl(${360 * Math.random()}, 100%, 70%)`,         // Generate random color for player 
-    sequenceNumber: 0,
-    points: 0
-  }    
+  
   
   // Broadcast new players to everyone
   io.emit('refreshPlayers', serverPlayers)
 
+  /**/
   // Listen for connect then initialize canvas
-  socket.on('initCanvas', ({width, height, devicePixelRatio}) => {
-
-    serverPlayers[socket.id].canvas = {
-      width,
-      height,
-    }
+  socket.on('initCanvas', () => {
 
     
-    // Set player radius
-    if( devicePixelRatio > 1) {
-      serverPlayers[socket.id].radius = 2 * RADIUS
-    } else {
-      serverPlayers[socket.id].radius = RADIUS
-    }
     
   })
+  /**/
 
+  /**/
   // Listen for shoot action 
   socket.on('shoot', ({x, y, angle}) => {
     projectileId++;
@@ -101,7 +84,41 @@ io.on('connection', (socket) => {
 
     console.log(serverProjectiles)
   })
-  
+  /**/
+
+  /**/
+  // Initialize defaults 
+  socket.on('initGame', ({username, width, height, devicePixelRatio}) => {
+
+    // Create a new player with id comes from socket
+    // 2D Locations of players are randomized
+    serverPlayers[socket.id] = {
+      x: 600 * Math.random(),
+      y: 600 * Math.random(),
+      radius: 10,
+      color: `hsl(${360 * Math.random()}, 100%, 70%)`,         // Generate random color for player 
+      sequenceNumber: 0,
+      points: 0,
+      username
+    }    
+
+    // Canvas initialization
+    serverPlayers[socket.id].canvas = {
+      width,
+      height,
+    }
+
+    // Set player radius
+    if( devicePixelRatio > 1) {
+      serverPlayers[socket.id].radius = 2 * RADIUS
+    } else {
+      serverPlayers[socket.id].radius = RADIUS
+    }
+
+  })
+  /**/
+
+  /**/
   // If player disconnects delete that player and send a response
   socket.on('disconnect', (reason) => {
     
@@ -112,8 +129,9 @@ io.on('connection', (socket) => {
     
     io.emit('refreshPlayers', serverPlayers)
   })
+  /**/
 
-
+  /**/
   // Player inputs will be caught here
   socket.on('keydown', ({keycode, sequenceNumber }) => {
     
@@ -147,7 +165,8 @@ io.on('connection', (socket) => {
         console.log("Key did not recognized")
     }
   })
-  
+  /**/
+
   console.log(serverPlayers)
 })
 
