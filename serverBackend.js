@@ -88,13 +88,13 @@ io.on('connection', (socket) => {
 
   /**/
   // Initialize defaults 
-  socket.on('initGame', ({username, width, height, devicePixelRatio}) => {
+  socket.on('initGame', ({ username, width, height }) => {
 
     // Create a new player with id comes from socket
     // 2D Locations of players are randomized
     serverPlayers[socket.id] = {
-      x: 600 * Math.random(),
-      y: 600 * Math.random(),
+      x: 1024 * Math.random(),
+      y: 576 * Math.random(),
       radius: 10,
       color: `hsl(${360 * Math.random()}, 100%, 70%)`,         // Generate random color for player 
       sequenceNumber: 0,
@@ -106,13 +106,6 @@ io.on('connection', (socket) => {
     serverPlayers[socket.id].canvas = {
       width,
       height,
-    }
-
-    // Set player radius
-    if( devicePixelRatio > 1) {
-      serverPlayers[socket.id].radius = 2 * RADIUS
-    } else {
-      serverPlayers[socket.id].radius = RADIUS
     }
 
   })
