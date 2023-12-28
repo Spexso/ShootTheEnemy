@@ -41,7 +41,8 @@ socket.on('refreshPlayers', (appPlayers) => {
         x:backendPlayer.x,
         y:backendPlayer.y,
         radius: backendPlayer.radius,
-        color: backendPlayer.color
+        color: backendPlayer.color,
+        username: backendPlayer.username
       })
 
       // Dynamically fill Leaderboard 
