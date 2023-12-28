@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 const serverPlayers = {}
 
 // Amount of pixels to shift on movement
-const moveSpeed = 10
+const moveSpeed = 6
 
 // Radius of player pawn
 const RADIUS = 10
@@ -136,31 +136,33 @@ io.on('connection', (socket) => {
     const backEndPlayer = serverPlayers[socket.id]
     
 
-    // Track sequence number of keys for individual player
-    if(serverPlayers[socket.id].sequenceNumber){
-      serverPlayers[socket.id].sequenceNumber = sequenceNumber
+    // If player destroyed return
+    if(!serverPlayers[socket.id].sequenceNumber){
+      return
     }
     
+    // Track sequence number of keys for individual player
+    serverPlayers[socket.id].sequenceNumber = sequenceNumber
 
     // Based on input select movement action
     switch (keycode) {
       case 'keyW':
-        console.log('Key W initiated');
+        //console.log('Key W initiated');
         serverPlayers[socket.id].y -= moveSpeed
         break
 
       case 'keyA':
-        console.log('Key A initiated');
+        //console.log('Key A initiated');
         serverPlayers[socket.id].x -= moveSpeed
         break
 
       case 'keyS':
-        console.log('Key S initiated');
+        //console.log('Key S initiated');
         serverPlayers[socket.id].y += moveSpeed
         break
 
       case 'keyD':
-        console.log('Key D initiated');
+        //console.log('Key D initiated');
         serverPlayers[socket.id].x += moveSpeed
         break
 
@@ -171,9 +173,9 @@ io.on('connection', (socket) => {
 
     const playerSides = {
       left: backEndPlayer.x - backEndPlayer.radius,
-      right: backEndPlayer.x + backEndPlayer.radius, 
-      top: backEndPlayer.y - backEndPlayer.radius, 
-      bottom: backEndPlayer.y + backEndPlayer.radius  
+      right: backEndPlayer.x + backEndPlayer.radius,
+      top: backEndPlayer.y - backEndPlayer.radius,
+      bottom: backEndPlayer.y + backEndPlayer.radius
     }
 
     if( playerSides.left < 0) 
