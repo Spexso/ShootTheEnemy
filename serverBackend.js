@@ -18,6 +18,10 @@ const io = new Server(server, { pingInterval: 2000, pingTimeout: 3000})         
 // Port Number for local run
 const port = 3000
 
+// Fixed Canvas Size
+const Constwidth = 1024
+const Constheight = 576
+
 app.use(express.static('public'))
 
 // Response to the requests
@@ -128,6 +132,9 @@ io.on('connection', (socket) => {
   // Player inputs will be caught here
   socket.on('keydown', ({keycode, sequenceNumber }) => {
     
+    // Detection of canvas borders
+    const backEndPlayer = serverPlayers[socket.id]
+    
 
     // Track sequence number of keys for individual player
     serverPlayers[socket.id].sequenceNumber = sequenceNumber
@@ -157,6 +164,26 @@ io.on('connection', (socket) => {
       default:
         console.log("Key did not recognized")
     }
+
+
+    const playerSides = {
+      left: backEndPlayer.x - backEndPlayer.radius,
+      right: backEndPlayer.x + backEndPlayer.radius, 
+      top: backEndPlayer.y - backEndPlayer.radius, 
+      bottom: backEndPlayer.y + backEndPlayer.radius  
+    }
+
+    if( playerSides.left < 0) 
+      serverPlayers[socket.id].x = backEndPlayer.radius 
+    
+    if( playerSides.right > Constwidth)
+      serverPlayers[socket.id].x = Constwidth - backEndPlayer.radius
+
+    if( playerSides.top < 0)
+      serverPlayers[socket.id].y = backEndPlayer.radius
+
+    if( playerSides.bottom > Constheight)
+      serverPlayers[socket.id].y = Constheight - backEndPlayer.radius
   })
   /**/
 
