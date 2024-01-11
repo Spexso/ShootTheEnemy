@@ -196,15 +196,6 @@ function animate() {
 
     ProjectileToDraw.draw();
   }
-  /*
-  for (let i = frontEndProjectiles.length - 1; i >= 0; i--) {
-
-    const frontEndProjectile = frontEndProjectiles[i]
-
-    frontEndProjectile.update()
-
-  }
-  */
 
 }
 
