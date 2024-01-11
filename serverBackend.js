@@ -137,10 +137,7 @@ io.on('connection', (socket) => {
     
 
     // Track sequence number of keys for individual player
-    if(serverPlayers[socket.id].sequenceNumber){
-      serverPlayers[socket.id].sequenceNumber = sequenceNumber
-    }
-    
+    serverPlayers[socket.id].sequenceNumber = sequenceNumber
 
     // Based on input select movement action
     switch (keycode) {
