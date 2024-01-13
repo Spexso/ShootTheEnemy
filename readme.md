@@ -3,7 +3,27 @@
 Online Javascript game built for browsers that works on AWS Cloud
 
 ## Structure:
->serverBackend.js
+|   .gitignore
+|   .prettierrc
+|   package-lock.json
+|   package.json
+|   project_structure.txt
+|   readme.md
+|   serverBackend.js
+|   node_modules
+\---public
+    |   index.html
+    |   
+    +---img
+    |       fancy-cushion.png
+    |       
+    \---js
+        |   eventListeners.js
+        |   serverFrontend.js
+        |   
+        \---classes
+                Player.js
+                Projectile.js
 
 ## Instructions:
 ### Local:
@@ -12,3 +32,5 @@ Online Javascript game built for browsers that works on AWS Cloud
 
 ### Cloud:
 1. Connect to `ec2-52-202-235-141.compute-1.amazonaws.com:3000`
+
+
