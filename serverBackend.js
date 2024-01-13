@@ -109,11 +109,10 @@ io.on('connection', (socket) => {
     // Detection of canvas borders
     const backEndPlayer = serverPlayers[socket.id]
 
+    // Check validation
+    if (!serverPlayers[socket.id]) return
 
-    // Track sequence number of keys for individual player
-    if(serverPlayers[socket.id].sequenceNumber){
-      serverPlayers[socket.id].sequenceNumber = sequenceNumber
-    }
+    serverPlayers[socket.id].sequenceNumber = sequenceNumber
 
 
     // Based on input select movement action
