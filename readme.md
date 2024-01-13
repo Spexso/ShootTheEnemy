@@ -2,6 +2,9 @@
 
 Online Javascript game built for browsers that works on AWS Cloud
 
+## Structure:
+>serverBackend.js
+
 ## Instructions:
 ### Local:
 1. Run `serverBackend.js` with the command `node serverBackend.js`
