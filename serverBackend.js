@@ -120,19 +120,19 @@ io.on('connection', (socket) => {
     // Based on input select movement action
     switch (keycode) {
       case 'keyW':
-        console.log('Key W initiated');
+        //console.log('Key W initiated');
         serverPlayers[socket.id].y -= moveSpeed
         break
       case 'keyA':
-        console.log('Key A initiated');
+        //console.log('Key A initiated');
         serverPlayers[socket.id].x -= moveSpeed
         break
       case 'keyS':
-        console.log('Key S initiated');
+        //console.log('Key S initiated');
         serverPlayers[socket.id].y += moveSpeed
         break
       case 'keyD':
-        console.log('Key D initiated');
+        //console.log('Key D initiated');
         serverPlayers[socket.id].x += moveSpeed
         break
       default:
