@@ -9,8 +9,8 @@ const scoreEl = document.querySelector('#scoreEl')
 // Device screens pixel ratio assign if no ratio set it to 1 which is default value
 const resolutionRatio = window.devicePixelRatio || 1
 
-canvas.width = innerWidth * resolutionRatio
-canvas.height = innerHeight * resolutionRatio
+canvas.width = 1024 * resolutionRatio
+canvas.height = 576 * resolutionRatio
 
 c.scale(resolutionRatio, resolutionRatio)
 
@@ -175,7 +175,7 @@ function animate() {
   // Draw all players
   for (const id in FrontendPlayers) {
 
-    const PlayerToDraw = FrontendPlayers[id];
+    const PlayerToDraw = FrontendPlayers[id]
 
     // Linear Interpolation 
     if(PlayerToDraw.target) {
@@ -184,9 +184,11 @@ function animate() {
 
       FrontendPlayers[id].y += ( FrontendPlayers[id].target.y - FrontendPlayers[id].y ) * 0.5
     }
+
     PlayerToDraw.draw();
   }
 
+  
   for (const id in frontEndProjectiles) {
 
     const ProjectileToDraw = frontEndProjectiles[id];
@@ -196,7 +198,7 @@ function animate() {
   
 }
 
-const LocalSpeed = 10;
+const LocalSpeed = 6;
 const playerInputs = []
 let sequenceNumber = 0
 

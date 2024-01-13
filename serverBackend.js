@@ -55,18 +55,9 @@ io.on('connection', (socket) => {
   console.log('A new player has connected');
 
   
-  
   // Broadcast new players to everyone
   io.emit('refreshPlayers', serverPlayers)
 
-  /**/
-  // Listen for connect then initialize canvas
-  socket.on('initCanvas', () => {
-
-    
-    
-  })
-  /**/
 
   /**/
   // Listen for shoot action 
@@ -177,17 +168,29 @@ io.on('connection', (socket) => {
       bottom: backEndPlayer.y + backEndPlayer.radius
     }
 
-    if( playerSides.left < 0) 
+    if( playerSides.left < 0) {
       serverPlayers[socket.id].x = backEndPlayer.radius 
+      console.log("left")
+    }
+      
     
-    if( playerSides.right > Constwidth)
+    if( playerSides.right > 1024) {
       serverPlayers[socket.id].x = Constwidth - backEndPlayer.radius
+      console.log("right")
+    }
+      
 
-    if( playerSides.top < 0)
+    if( playerSides.top < 0) {
       serverPlayers[socket.id].y = backEndPlayer.radius
+      console.log("top")
+    }
+      
 
-    if( playerSides.bottom > Constheight)
+    if( playerSides.bottom > 576){ 
       serverPlayers[socket.id].y = Constheight - backEndPlayer.radius
+      console.log("bottom")
+    }
+      
   })
   /**/
 

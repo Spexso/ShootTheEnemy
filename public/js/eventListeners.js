@@ -10,8 +10,8 @@ addEventListener('click', (event) => {
   }
   // Get angle 
   const angle = Math.atan2(
-    (event.clientY - top)  - playerPosition.y,
-    (event.clientX - left)  - playerPosition.x
+    event.clientY - top  - playerPosition.y,
+    event.clientX - left  - playerPosition.x
   )
 
   // Get velocity
