@@ -193,11 +193,7 @@ function animate() {
 
     ProjectileToDraw.draw();
   }
-<<<<<<< HEAD
-=======
   
->>>>>>> parent of af70085 (Revert "Enhance Interpolation")
-
 }
 
 const LocalSpeed = 10;

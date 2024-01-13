@@ -134,14 +134,9 @@ io.on('connection', (socket) => {
     
     // Detection of canvas borders
     const backEndPlayer = serverPlayers[socket.id]
-
-<<<<<<< HEAD
-     // If player destroyed return
-     if(!serverPlayers[socket.id].sequenceNumber){
-=======
+    
     // If player destroyed return
     if(!serverPlayers[socket.id].sequenceNumber){
->>>>>>> parent of af70085 (Revert "Enhance Interpolation")
       return
     }
     
