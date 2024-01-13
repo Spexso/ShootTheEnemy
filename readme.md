@@ -3,8 +3,8 @@
 Online Javascript game built for browsers that works on AWS Cloud
 
 ## Structure:
-> serverBackend.js
-> public
+# > serverBackend.js
+# > public
 >>js
 
 ## Instructions:
