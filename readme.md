@@ -4,8 +4,8 @@ Online Javascript game built for browsers that works on AWS Cloud
 
 ## Structure:
 >serverBackend.js  (\)
->>serverFrontend.js (\public\js\serverFrontend.js)
->>>index.html (\public\index.html)
+>>index.html (\public\index.html)
+>>>serverFrontend.js (\public\js\serverFrontend.js)
 
 ## Instructions:
 ### Local:
