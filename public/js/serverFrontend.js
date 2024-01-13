@@ -76,18 +76,19 @@ socket.on('refreshPlayers', (appPlayers) => {
 
       // Add sorted Element
       childDivs.forEach(div => {
-
+      
         parentDiv.appendChild(div)
       })
 
+
+      FrontendPlayers[id].target = {
+        x: backendPlayer.x,
+        y: backendPlayer.y
+      }
+
       /********************************** */
 
-
       if (id === socket.id) {
-
-        // if a player already exists
-        FrontendPlayers[id].x = backendPlayer.x
-        FrontendPlayers[id].y = backendPlayer.y
 
         const lastBackendInputIndex = playerInputs.findIndex((input) => {
           return backendPlayer.sequenceNumber === input.sequenceNumber
@@ -97,22 +98,11 @@ socket.on('refreshPlayers', (appPlayers) => {
           playerInputs.splice(0, lastBackendInputIndex + 1)
 
         playerInputs.forEach((input) => {
-          FrontendPlayers[id].x += input.dx
-          FrontendPlayers[id].y += input.dy
+          FrontendPlayers[id].target.x += input.dx
+          FrontendPlayers[id].target.y += input.dy
         })
       }
-      else {
-
-        // For other players
-
-        gsap.to(FrontendPlayers[id], {
-          x: backendPlayer.x,
-          y: backendPlayer.y,
-          duration: 0.015,
-          ease: 'linear'
-        })
-
-      }
+      
     }
   }
 
@@ -187,6 +177,13 @@ function animate() {
 
     const PlayerToDraw = FrontendPlayers[id];
 
+    // Linear Interpolation 
+    if(PlayerToDraw.target) {
+
+      FrontendPlayers[id].x += ( FrontendPlayers[id].target.x - FrontendPlayers[id].x ) * 0.5
+
+      FrontendPlayers[id].y += ( FrontendPlayers[id].target.y - FrontendPlayers[id].y ) * 0.5
+    }
     PlayerToDraw.draw();
   }
 
@@ -196,6 +193,10 @@ function animate() {
 
     ProjectileToDraw.draw();
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> parent of af70085 (Revert "Enhance Interpolation")
 
 }
 
@@ -227,7 +228,7 @@ setInterval(() => {
     sequenceNumber++
     playerInputs.push({ sequenceNumber, dx: 0, dy: -LocalSpeed })
 
-    FrontendPlayers[socket.id].y -= LocalSpeed
+    //FrontendPlayers[socket.id].y -= LocalSpeed
     socket.emit('keydown', { keycode: 'keyW', sequenceNumber })
   }
 
@@ -236,7 +237,7 @@ setInterval(() => {
     sequenceNumber++
     playerInputs.push({ sequenceNumber, dx: -LocalSpeed, dy: 0})
 
-    FrontendPlayers[socket.id].x -= LocalSpeed
+    //FrontendPlayers[socket.id].x -= LocalSpeed
     socket.emit('keydown', { keycode: 'keyA', sequenceNumber })
   }
 
@@ -245,7 +246,7 @@ setInterval(() => {
     sequenceNumber++
     playerInputs.push({ sequenceNumber, dx: 0, dy: LocalSpeed })
 
-    FrontendPlayers[socket.id].y += LocalSpeed
+    //FrontendPlayers[socket.id].y += LocalSpeed
     socket.emit('keydown', { keycode: 'keyS', sequenceNumber })
   }
 
@@ -254,7 +255,7 @@ setInterval(() => {
     sequenceNumber++
     playerInputs.push({ sequenceNumber, dx: LocalSpeed, dy: 0})
 
-    FrontendPlayers[socket.id].x += LocalSpeed
+    //FrontendPlayers[socket.id].x += LocalSpeed
     socket.emit('keydown', { keycode: 'keyD', sequenceNumber })
   }
 
@@ -271,22 +272,22 @@ window.addEventListener('keydown', (event) => {
   switch(event.code){
 
     case 'KeyW':
-      console.log('W key pressed')
+      //console.log('W key pressed')
       keys.w.pressed = true
       break
 
     case 'KeyA':
-      console.log('A key pressed')
+      //console.log('A key pressed')
       keys.a.pressed = true
       break
     
     case 'KeyD':
-      console.log('D key pressed')  
+      //console.log('D key pressed')  
       keys.d.pressed = true
       break
       
     case 'KeyS':
-      console.log('S key pressed')
+      //console.log('S key pressed')
       keys.s.pressed = true
       break
   }
@@ -324,7 +325,7 @@ document.querySelector('#usernameForm').addEventListener('submit', (event)=> {
   socket.emit('initGame', {
     width: canvas.width, 
     height: canvas.height, 
-    devicePixelRatio,
+    resolutionRatio,
     username: document.querySelector('#usernameInput').value
   })
 
