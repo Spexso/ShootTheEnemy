@@ -134,8 +134,12 @@ io.on('connection', (socket) => {
     
     // Detection of canvas borders
     const backEndPlayer = serverPlayers[socket.id]
-    
 
+     // If player destroyed return
+     if(!serverPlayers[socket.id].sequenceNumber){
+      return
+    }
+    
     // Track sequence number of keys for individual player
     serverPlayers[socket.id].sequenceNumber = sequenceNumber
 

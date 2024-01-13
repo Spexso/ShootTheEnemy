@@ -9,8 +9,8 @@ const scoreEl = document.querySelector('#scoreEl')
 // Device screens pixel ratio assign if no ratio set it to 1 which is default value
 const resolutionRatio = window.devicePixelRatio || 1
 
-canvas.width = 1024 * resolutionRatio
-canvas.height = 576 * resolutionRatio
+canvas.width = innerWidth * resolutionRatio
+canvas.height = innerHeight * resolutionRatio
 
 c.scale(resolutionRatio, resolutionRatio)
 
